@@ -12,7 +12,7 @@ import SectionTitle from '../../../components/SectionTitle/SectionTitle';
 import MenuCategory from '../MenuCategory/MenuCategory';
 
 const Menu = () => {
-  const [menu, loading] = useMenu();
+  const [menu] = useMenu();
   const dessert = menu.filter((item) => item.category === 'dessert');
   const soup = menu.filter((item) => item.category === 'soup');
   const salad = menu.filter((item) => item.category === 'salad');
@@ -38,26 +38,26 @@ const Menu = () => {
       {/* Dessert Menu Item */}
       <MenuCategory
         items={dessert}
-        title={'Desserts'}
+        title={'dessert'}
         subTitle={'Try out the best dessert in our house. You will love them'}
         coverImg={dessertCover}></MenuCategory>
 
       {/* Pizza menu item */}
       <MenuCategory
         items={pizza}
-        title={'Pizza'}
+        title={'pizza'}
         subTitle={'Try out the best Pizza made for you. You will love them'}
         coverImg={pizzaCover}></MenuCategory>
 
       {/* Salad menu item */}
       <MenuCategory
         items={salad}
-        title={'Salads'}
+        title={'salad'}
         subTitle={'Get Healthy with us'}
         coverImg={saladCover}></MenuCategory>
       <MenuCategory
         items={soup}
-        title={'Soups'}
+        title={'soup'}
         subTitle={'Try out the best Soups made for you. You will love them'}
         coverImg={soupCover}></MenuCategory>
     </div>
