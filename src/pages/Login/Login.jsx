@@ -1,11 +1,37 @@
+import { useContext, useEffect, useRef, useState } from 'react';
+import { loadCaptchaEnginge, LoadCanvasTemplate, validateCaptcha } from 'react-simple-captcha';
+import { AuthContext } from '../../providers/AuthProvider';
+import { Link } from 'react-router-dom';
+
 const Login = () => {
+  const captchaRef = useRef(null);
+  const [disabled, setDisabled] = useState(true);
+
+  const { signIn } = useContext(AuthContext);
+
+  //   load recaptcha
+  useEffect(() => {
+    loadCaptchaEnginge(6);
+  }, []);
   const handleLogin = (e) => {
     e.preventDefault();
     const form = e.target;
     const email = form.email.value;
     const password = form.password.value;
-    console.log(email, password);
+    signIn(email, password).then((result) => {
+      const user = result.user;
+    });
   };
+
+  const handleValidateCaptcha = () => {
+    const user_captcha_value = captchaRef.current.value;
+    if (validateCaptcha(user_captcha_value)) {
+      setDisabled(false);
+    } else {
+      setDisabled(true);
+    }
+  };
+
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col md:flex-row">
@@ -49,14 +75,37 @@ const Login = () => {
                 </a>
               </label>
             </div>
+            <div className="form-control">
+              <label className="label">
+                <LoadCanvasTemplate />
+              </label>
+              <input
+                type="text"
+                ref={captchaRef}
+                name="captcha"
+                placeholder="type the captcha above"
+                className="input input-bordered"
+              />
+              <button
+                onClick={handleValidateCaptcha}
+                className="btn btn-outline btn-sm mt-2">
+                Validate
+              </button>
+            </div>
             <div className="form-control mt-6">
               <input
                 className="btn btn-primary"
                 type="submit"
                 value={'Login'}
+                disabled={disabled}
               />
             </div>
           </form>
+            <p className='text-center pb-3'>
+              <small>
+                New Here? <Link to={'/signup'}>Create a new Account</Link>{' '}
+              </small>
+            </p>
         </div>
       </div>
     </div>
