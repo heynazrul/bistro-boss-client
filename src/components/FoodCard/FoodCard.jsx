@@ -2,10 +2,13 @@ import { useContext } from "react";
 import { AuthContext } from "../../providers/AuthProvider";
 import { toast } from "react-hot-toast";
 import { useLocation, useNavigate } from "react-router-dom";
+import useCart from "../../hooks/useCart";
 
 const FoodCard = ({ item }) => {
   const { image, price, recipe, name , _id} = item;
   const {user} = useContext(AuthContext)
+  const [, refetch] = useCart()
+
   const navigate = useNavigate()
   const location = useLocation()
 
@@ -23,6 +26,7 @@ const FoodCard = ({ item }) => {
       .then(res => res.json())
       .then(data => {
         if(data.insertedId){
+          refetch(); //refetch cart to update the number of cart
           toast.success('Added to cart')
         }
       })
