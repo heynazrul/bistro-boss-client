@@ -1,9 +1,14 @@
 import { Link, Outlet } from 'react-router-dom';
-import { FaCalendarAlt, FaHome, FaShoppingCart, FaWallet } from 'react-icons/fa';
+import { FaBook, FaCalendarAlt, FaHome, FaShoppingCart, FaUser, FaUsers, FaUtensilSpoon, FaWallet } from 'react-icons/fa';
 import { FiMenu } from 'react-icons/fi';
 import { Helmet } from 'react-helmet-async';
+import useCart from '../hooks/useCart';
 
 const Dashboard = () => {
+  const [cart] = useCart();
+
+  // TODO: load data from the server to have dynamic isAdmin
+  const isAdmin = true;
   return (
     <div className="drawer lg:drawer-open">
       <Helmet>
@@ -32,28 +37,65 @@ const Dashboard = () => {
         <ul className="menu p-4 w-80 h-full bg-base-200 text-base-content">
           {/* Sidebar content here */}
 
-          <li>
-            <Link>
-              <FaHome></FaHome>User Home
-            </Link>
-          </li>
+          {isAdmin ? (
+            <>
+              <li>
+                <Link to={'/dashboard/home'}>
+                  <FaHome></FaHome>Admin Home
+                </Link>
+              </li>
 
-          <li>
-            <Link>
-              <FaCalendarAlt></FaCalendarAlt>Reservations
-            </Link>
-          </li>
-          <li>
-            <Link to={'/dashboard/history'}>
-              <FaWallet></FaWallet>Payment History
-            </Link>
-          </li>
-          <li>
-            <Link to={'/dashboard/mycart'}>
-              <FaShoppingCart></FaShoppingCart>My Cart
-            </Link>
-          </li>
+              <li>
+                <Link>
+                  <FaUtensilSpoon></FaUtensilSpoon>Add Items
+                </Link>
+              </li>
+              <li>
+                <Link to={'/dashboard/history'}>
+                  <FaWallet></FaWallet>Manage Items
+                </Link>
+              </li>
+              <li>
+                <Link to={'/dashboard/bookings'}>
+                  <FaBook></FaBook>Manage Bookings
+                </Link>
+              </li>
+              <li>
+                <Link to={'/dashboard/allusers'}>
+                  <FaUsers></FaUsers>Manage Users
+                </Link>
+              </li>
+            
+            </>
+          ) : (
+            <>
+              <li>
+                <Link>
+                  <FaHome></FaHome>User Home
+                </Link>
+              </li>
+
+              <li>
+                <Link>
+                  <FaCalendarAlt></FaCalendarAlt>Reservations
+                </Link>
+              </li>
+              <li>
+                <Link to={'/dashboard/history'}>
+                  <FaWallet></FaWallet>Payment History
+                </Link>
+              </li>
+              <li>
+                <Link to={'/dashboard/mycart'}>
+                  <FaShoppingCart></FaShoppingCart>My Cart
+                  <span className="badge badge-secondary">+{cart.length}</span>
+                </Link>
+              </li>
+            </>
+          )}
+          {/* Divider */}
           <div className="divider"></div>
+
           <li>
             <Link to={'/'}>
               <FaHome></FaHome>Home
