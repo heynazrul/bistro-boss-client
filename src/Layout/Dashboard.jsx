@@ -8,7 +8,8 @@ const Dashboard = () => {
   const [cart] = useCart();
 
   // TODO: load data from the server to have dynamic isAdmin
-  const isAdmin = true;
+  // const isAdmin = true;
+  
   return (
     <div className="drawer lg:drawer-open">
       <Helmet>
