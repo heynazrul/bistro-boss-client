@@ -1,4 +1,5 @@
 import { useQuery } from '@tanstack/react-query';
+import { toast } from 'react-hot-toast';
 import { FaTrashAlt, FaUserShield } from 'react-icons/fa';
 
 const AllUsers = () => {
@@ -6,6 +7,20 @@ const AllUsers = () => {
     const res = await fetch('http://localhost:5000/users');
     return res.json();
   });
+
+  const handleUserRole = user => {
+    fetch(`http://localhost:5000/users/admin/${user._id}`, {
+        method: 'PATCH'
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.modifiedCount){
+            refetch()
+            toast.success("Admin now")
+        }
+    })
+    ;
+  }
 
   const handleDelete = (user) => {};
   return (
@@ -34,7 +49,7 @@ const AllUsers = () => {
                     'admin'
                   ) : (
                     <button
-                      onClick={() => handleDelete(user)}
+                      onClick={() => handleUserRole(user)}
                       className="btn  bg-sky-700 text-white btn-md border-none">
                       <FaUserShield></FaUserShield>
                     </button>
